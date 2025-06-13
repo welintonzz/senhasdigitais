@@ -20,6 +20,13 @@
             --input-bg: #f8f9fa;
             --border-color: #ddd;
             --time-estimate-color: #666;
+            
+            --base-font-size: 16px;
+            --h1-font-size: 28px;
+            --label-font-size: 1rem;
+            --password-font-size: 18px;
+            --button-font-size: 16px;
+            --footer-font-size: 14px;
         }
         
         .dark-mode {
@@ -34,6 +41,33 @@
             --input-bg: #2d2d2d;
             --border-color: #444;
             --time-estimate-color: #aaa;
+        }
+        
+        .font-size-small {
+            --base-font-size: 14px;
+            --h1-font-size: 24px;
+            --label-font-size: 0.875rem;
+            --password-font-size: 16px;
+            --button-font-size: 14px;
+            --footer-font-size: 12px;
+        }
+        
+        .font-size-large {
+            --base-font-size: 18px;
+            --h1-font-size: 32px;
+            --label-font-size: 1.125rem;
+            --password-font-size: 20px;
+            --button-font-size: 18px;
+            --footer-font-size: 16px;
+        }
+        
+        .font-size-extra-large {
+            --base-font-size: 20px;
+            --h1-font-size: 36px;
+            --label-font-size: 1.25rem;
+            --password-font-size: 22px;
+            --button-font-size: 20px;
+            --footer-font-size: 18px;
         }
         
         * {
@@ -53,6 +87,7 @@
             align-items: center;
             min-height: 100vh;
             transition: background-color 0.3s, color 0.3s;
+            font-size: var(--base-font-size);
         }
         
         .container {
@@ -69,7 +104,8 @@
             color: var(--primary-color);
             text-align: center;
             margin-bottom: 20px;
-            font-size: 28px;
+            font-size: var(--h1-font-size);
+            transition: font-size 0.3s;
         }
         
         .password-display {
@@ -80,7 +116,7 @@
         #password {
             width: 100%;
             padding: 15px;
-            font-size: 18px;
+            font-size: var(--password-font-size);
             border: 2px solid var(--border-color);
             border-radius: 5px;
             background-color: var(--input-bg);
@@ -109,6 +145,7 @@
             padding: 5px 10px;
             cursor: pointer;
             transition: all 0.3s;
+            font-size: var(--label-font-size);
         }
         
         .copy-btn:hover {
@@ -127,6 +164,7 @@
             display: block;
             margin-bottom: 5px;
             font-weight: 500;
+            font-size: var(--label-font-size);
         }
         
         input[type="range"] {
@@ -149,7 +187,7 @@
         
         .length-value {
             text-align: center;
-            font-size: 18px;
+            font-size: var(--label-font-size);
             font-weight: bold;
             color: var(--primary-color);
             margin-top: 5px;
@@ -165,10 +203,12 @@
         .option {
             display: flex;
             align-items: center;
+            font-size: var(--label-font-size);
         }
         
         .option input {
             margin-right: 8px;
+            transform: scale(1.2);
         }
         
         .strength-meter {
@@ -212,10 +252,11 @@
             font-weight: bold;
             min-width: 80px;
             text-align: right;
+            font-size: var(--label-font-size);
         }
         
         .time-estimate {
-            font-size: 14px;
+            font-size: var(--footer-font-size);
             color: var(--time-estimate-color);
             margin-top: 5px;
             transition: color 0.3s;
@@ -228,7 +269,7 @@
             color: white;
             border: none;
             border-radius: 5px;
-            font-size: 16px;
+            font-size: var(--button-font-size);
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s;
@@ -250,6 +291,7 @@
             transform: translateX(200%);
             transition: transform 0.3s ease;
             z-index: 1000;
+            font-size: var(--label-font-size);
         }
         
         .notification.show {
@@ -257,6 +299,26 @@
         }
         
         .dark-mode-toggle {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+            z-index: 100;
+        }
+        
+        .font-size-toggle {
             position: fixed;
             bottom: 20px;
             right: 20px;
@@ -276,7 +338,7 @@
             z-index: 100;
         }
         
-        .dark-mode-toggle:hover {
+        .dark-mode-toggle:hover, .font-size-toggle:hover {
             background-color: var(--secondary-color);
             transform: scale(1.1);
         }
@@ -284,8 +346,43 @@
         .footer {
             text-align: center;
             margin-top: 20px;
-            font-size: 14px;
+            font-size: var(--footer-font-size);
             color: var(--time-estimate-color);
+        }
+        
+        .font-size-menu {
+            position: fixed;
+            bottom: 80px;
+            right: 80px;
+            background-color: var(--container-bg);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            z-index: 99;
+            border: 1px solid var(--border-color);
+        }
+        
+        .font-size-menu.show {
+            display: flex;
+        }
+        
+        .font-size-option {
+            padding: 8px 15px;
+            background-color: var(--input-bg);
+            border: none;
+            border-radius: 5px;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: var(--base-font-size);
+        }
+        
+        .font-size-option:hover {
+            background-color: var(--primary-color);
+            color: white;
         }
         
         @media (max-width: 600px) {
@@ -297,12 +394,19 @@
                 padding: 20px;
             }
             
-            .dark-mode-toggle {
+            .dark-mode-toggle, .font-size-toggle {
                 width: 40px;
                 height: 40px;
                 font-size: 16px;
-                bottom: 15px;
-                right: 15px;
+            }
+            
+            .dark-mode-toggle {
+                bottom: 70px;
+            }
+            
+            .font-size-menu {
+                bottom: 70px;
+                right: 70px;
             }
         }
     </style>
@@ -362,6 +466,14 @@
     </div>
     
     <button class="dark-mode-toggle" id="dark-mode-toggle" title="Alternar modo escuro">🌓</button>
+    <button class="font-size-toggle" id="font-size-toggle" title="Ajustar tamanho da fonte">A+</button>
+    
+    <div class="font-size-menu" id="font-size-menu">
+        <button class="font-size-option" data-size="small">Pequeno</button>
+        <button class="font-size-option" data-size="normal">Normal</button>
+        <button class="font-size-option" data-size="large">Grande</button>
+        <button class="font-size-option" data-size="extra-large">Extra Grande</button>
+    </div>
     
     <div class="notification" id="notification">Senha copiada!</div>
     
@@ -380,6 +492,9 @@
             const strengthText = document.getElementById('strength-text');
             const timeEstimate = document.getElementById('time-estimate');
             const darkModeToggle = document.getElementById('dark-mode-toggle');
+            const fontSizeToggle = document.getElementById('font-size-toggle');
+            const fontSizeMenu = document.getElementById('font-size-menu');
+            const fontSizeOptions = document.querySelectorAll('.font-size-option');
             const bars = [
                 document.getElementById('bar1'),
                 document.getElementById('bar2'),
@@ -402,6 +517,44 @@
                 } else {
                     darkModeToggle.textContent = '🌓';
                 }
+            });
+            
+            // Alternar menu de tamanho de fonte
+            fontSizeToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                fontSizeMenu.classList.toggle('show');
+            });
+            
+            // Fechar menu quando clicar fora
+            document.addEventListener('click', function() {
+                fontSizeMenu.classList.remove('show');
+            });
+            
+            // Prevenir fechamento do menu quando clicar nele
+            fontSizeMenu.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+            
+            // Alterar tamanho da fonte
+            fontSizeOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    const size = this.getAttribute('data-size');
+                    
+                    // Remove todas as classes de tamanho primeiro
+                    document.body.classList.remove(
+                        'font-size-small',
+                        'font-size-large',
+                        'font-size-extra-large'
+                    );
+                    
+                    // Adiciona a classe selecionada
+                    if (size !== 'normal') {
+                        document.body.classList.add(`font-size-${size}`);
+                    }
+                    
+                    // Fecha o menu
+                    fontSizeMenu.classList.remove('show');
+                });
             });
             
             // Atualiza o valor do tamanho quando o slider é movido
