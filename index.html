@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador de Senhas Seguras</title>
+    <title>Gerador de Senhas Seguras por Welinton</title>
     <style>
         :root {
             --primary-color: #4361ee;
@@ -13,6 +13,27 @@
             --danger-color: #ef233c;
             --success-color: #2b9348;
             --warning-color: #f77f00;
+            
+            --bg-color: #f0f2f5;
+            --container-bg: white;
+            --text-color: #212529;
+            --input-bg: #f8f9fa;
+            --border-color: #ddd;
+            --time-estimate-color: #666;
+        }
+        
+        .dark-mode {
+            --primary-color: #4895ef;
+            --secondary-color: #4361ee;
+            --dark-color: #f8f9fa;
+            --light-color: #212529;
+            
+            --bg-color: #121212;
+            --container-bg: #1e1e1e;
+            --text-color: #f8f9fa;
+            --input-bg: #2d2d2d;
+            --border-color: #444;
+            --time-estimate-color: #aaa;
         }
         
         * {
@@ -23,23 +44,25 @@
         }
         
         body {
-            background-color: #f0f2f5;
-            color: var(--dark-color);
+            background-color: var(--bg-color);
+            color: var(--text-color);
             line-height: 1.6;
             padding: 20px;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
         }
         
         .container {
-            background-color: white;
+            background-color: var(--container-bg);
             border-radius: 10px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             padding: 30px;
             width: 100%;
             max-width: 500px;
+            transition: background-color 0.3s;
         }
         
         h1 {
@@ -58,9 +81,9 @@
             width: 100%;
             padding: 15px;
             font-size: 18px;
-            border: 2px solid #ddd;
+            border: 2px solid var(--border-color);
             border-radius: 5px;
-            background-color: var(--light-color);
+            background-color: var(--input-bg);
             margin-bottom: 10px;
             text-align: center;
             font-weight: bold;
@@ -71,6 +94,8 @@
             justify-content: center;
             overflow-x: auto;
             white-space: nowrap;
+            color: var(--text-color);
+            transition: all 0.3s;
         }
         
         .copy-btn {
@@ -108,7 +133,7 @@
             width: 100%;
             height: 8px;
             -webkit-appearance: none;
-            background: #ddd;
+            background: var(--border-color);
             border-radius: 5px;
             outline: none;
         }
@@ -165,7 +190,7 @@
         .bar {
             height: 8px;
             border-radius: 5px;
-            background-color: #ddd;
+            background-color: var(--border-color);
             flex-grow: 1;
             transition: all 0.3s;
         }
@@ -191,8 +216,9 @@
         
         .time-estimate {
             font-size: 14px;
-            color: #666;
+            color: var(--time-estimate-color);
             margin-top: 5px;
+            transition: color 0.3s;
         }
         
         .generate-btn {
@@ -230,6 +256,38 @@
             transform: translateX(0);
         }
         
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+            z-index: 100;
+        }
+        
+        .dark-mode-toggle:hover {
+            background-color: var(--secondary-color);
+            transform: scale(1.1);
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: var(--time-estimate-color);
+        }
+        
         @media (max-width: 600px) {
             .options {
                 grid-template-columns: 1fr;
@@ -237,6 +295,14 @@
             
             .container {
                 padding: 20px;
+            }
+            
+            .dark-mode-toggle {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+                bottom: 15px;
+                right: 15px;
             }
         }
     </style>
@@ -291,7 +357,11 @@
         </div>
         
         <button class="generate-btn" id="generate-btn">Gerar Senha</button>
+        
+        <div class="footer">Gerador de Senhas Seguras por Welinton</div>
     </div>
+    
+    <button class="dark-mode-toggle" id="dark-mode-toggle" title="Alternar modo escuro">🌓</button>
     
     <div class="notification" id="notification">Senha copiada!</div>
     
@@ -309,12 +379,30 @@
             const notification = document.getElementById('notification');
             const strengthText = document.getElementById('strength-text');
             const timeEstimate = document.getElementById('time-estimate');
+            const darkModeToggle = document.getElementById('dark-mode-toggle');
             const bars = [
                 document.getElementById('bar1'),
                 document.getElementById('bar2'),
                 document.getElementById('bar3'),
                 document.getElementById('bar4')
             ];
+            
+            // Verifica o modo preferido do usuário
+            const prefersDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (prefersDarkMode) {
+                document.body.classList.add('dark-mode');
+                darkModeToggle.textContent = '🌞';
+            }
+            
+            // Alternar modo escuro
+            darkModeToggle.addEventListener('click', function() {
+                document.body.classList.toggle('dark-mode');
+                if (document.body.classList.contains('dark-mode')) {
+                    darkModeToggle.textContent = '🌞';
+                } else {
+                    darkModeToggle.textContent = '🌓';
+                }
+            });
             
             // Atualiza o valor do tamanho quando o slider é movido
             lengthSlider.addEventListener('input', function() {
